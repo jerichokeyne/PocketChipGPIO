@@ -9,6 +9,7 @@
 #include <vector>
 
 using namespace std;
+
 ///
 // This function will get all of the files in a directory (dir) and return them in an array (files)
 ///
@@ -66,52 +67,39 @@ void setupPIN(int pin, string mode) {
 	stringstream dFileName;
 	dFileName << "/sys/class/gpio/gpio" << pin << "/direction";
 	ofstream directionFile(dFileName.str().c_str());
-	directionFile << "out";
+	directionFile << mode;
 	directionFile.close();
 }	
+
+///
+// This function will release pin (pin)
+///
+void releasePIN(int pin) {
+	ofstream unexportFile("/sys/class/gpio/unexport");
+	unexportFile << pin;
+	unexportFile.close();
+}
 
 /// 
 // This function will take the pin (pin) and set it to a value (state)
 ///
-void writePIN(int pin, int state) {
+void writePIN(int pin, bool state) {
 	stringstream vFileName;
 	vFileName << "/sys/class/gpio/gpio" << pin << "/value";
 	ofstream valueFile(vFileName.str().c_str());
-	if (state == 1) {
-		valueFile << state << "\0";
-		cout << "LED off\n";
-	} else if (state == 0) {
-		valueFile << state << "\0";
-		cout << "LED on\n";
-	}
+	valueFile << (int)state << "\0";
 	valueFile.close();
 }
 
-int readPIN(int pin) {
+///
+// This function will take the pin (pin) and return its state
+///
+bool readPIN(int pin) {
 	stringstream vFileName;
 	vFileName << "/sys/class/gpio/gpio" << pin << "/value";
 	ifstream valueFile(vFileName.str().c_str());
-	int state;
+	bool state;
 	valueFile >> state;
 	valueFile.close();
 	return state;
 }
-/*
-///
-// This function flashed pin 2 on and off 10 times
-///
-int main() {
-	int pin = getPin(2); // GPIO1 on PocketChip
-	cout << "Flash LEDs by Jericho Keyne" << endl;
-	cout << "This program should blink an LED connteced between 3v and GPIO1/XIO-P2" << endl;
-	cout << "If the LED does not blink check your connections and try running as root" << endl;
-	setupPin(pin, "out");
-	for (int i = 0; i < 9; i++) {
-		writeLED(pin, 0);
-		sleep(1);
-		writeLED(pin, 1);
-		sleep(1);
-	}
-	return 0;
-}
-*/

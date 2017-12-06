@@ -10,16 +10,25 @@ int main() {
 	int state;
 	setupPIN(pin, "out");
 	setupPIN(pinR, "in");
-	/*for (int i = 0; i < 9; i++) {
+
+	cout << "Flashing LED between GPIO1 and 3 volts\n";
+	for (int i = 0; i < 9; i++) {
 		writePIN(pin, 0);
+		cout << "LED on\n";
 		sleep(1);
 		writePIN(pin, 1);
+		cout << "LED off\n";
 		sleep(1);
-	}*/
-	while (true) {
+	}
+
+	cout << "Now reading from GPIO2\n";
+	for (int i = 0; i < 10; i++) {
 		state = readPIN(pinR);
 		cout << state << endl;
 		sleep(1);
 	}
+
+	releasePIN(pin);
+	releasePIN(pinR);
 	return 0;
 }
