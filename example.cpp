@@ -11,6 +11,8 @@ int main() {
 	setupPIN(pin, "out");
 	setupPIN(pinR, "in");
 
+	cout << "If nothing happens, check your wiring and run as root\n";
+
 	cout << "Flashing LED between GPIO1 and 3 volts\n";
 	for (int i = 0; i < 9; i++) {
 		writePIN(pin, 0);
