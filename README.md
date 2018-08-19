@@ -1,13 +1,13 @@
 ## Introduction
 If you've used a PocketCHIP, you might be like me and wanted to figure out how to use the GPIO pins on the top.
 
-You might've even gone on the documentation and found out that there's two options, either a python API or the filesystem.
+You might have even gone on the documentation and found out that there's two options, either a python API or the file system API.
 
 I wanted to be able to use C++ so I figured I would make a C++ API.
 
 ## Including
 ```c++
-#include "gpio.cpp"
+#include "gpio.h"
 ```
 
 ## Primary Functions
@@ -35,3 +35,6 @@ Here are some common offsets you might want to use
 | GPIO6           | XIO-P7    | 7      |
 
 [This page has a list of all the gpio pins](https://github.com/xtacocorex/CHIP_IO)
+
+## Note
+I will likely not be working on the project anymore, as while I was testing out the example code I accidentally connect the 5V and 3.3V lines on my only PocketCHIP, this seems to have completely fried the CHIP. As such I can no longer do any testing of any code. Feel free to contribute if you would like to see more features added to this. 
