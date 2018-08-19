@@ -1,36 +1,37 @@
-#include "gpio.cpp"
+#include "gpio.h"
 #include <iostream>
 #include <unistd.h>
 
 using namespace std;
 
 int main() {
-	int pin = getPIN(2);
-	int pinR = getPIN(3);
-	int state;
-	setupPIN(pin, "out");
-	setupPIN(pinR, "in");
+    GPIO::PIN pin_write;
+    GPIO::PIN pin_read;
+    int state;
 
-	cout << "If nothing happens, check your wiring and run as root\n";
+    pin_write.setup(2, "out");
+    pin_read.setup(3, "in");
 
-	cout << "Flashing LED between GPIO1 and 3 volts\n";
-	for (int i = 0; i < 9; i++) {
-		writePIN(pin, 0);
-		cout << "LED on\n";
-		sleep(1);
-		writePIN(pin, 1);
-		cout << "LED off\n";
-		sleep(1);
-	}
+    cout << "If nothing happens, check your wiring and run as root\n";
 
-	cout << "Now reading from GPIO2\n";
-	for (int i = 0; i < 10; i++) {
-		state = readPIN(pinR);
-		cout << state << endl;
-		sleep(1);
-	}
+    cout << "Flashing LED between GPIO1 and 3 volts\n";
+    for (int i = 0; i < 9; i++) {
+        pin_write.writePIN(0); // Set pin_write low
+        cout << "LED on\n";
+        sleep(1);
+        pin_write.writePIN(1); // Set pin_write high
+        cout << "LED off\n";
+        sleep(1);
+    }
 
-	releasePIN(pin);
-	releasePIN(pinR);
-	return 0;
+    cout << "Now reading from GPIO2\n";
+    for (int i = 0; i < 10; i++) {
+        state = pin_read.readPIN(); // This will read the state of the pin as a boolean
+        cout << state << endl;
+        sleep(1);
+    }
+
+    pin_write.releasePIN(); // This tells the system that these pins are no longer being used
+    pin_read.releasePIN();
+    return 0;
 }
